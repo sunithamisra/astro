@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Astro Music: Albums</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <a href="/"><h1>Astro Music </h1></a>
+    <% if (items.length > 0) { %>
+    <ul>
+      <% items.forEach(function(item) { %>
+      <li><a href="/albums/<%=item._id%>"><%=item.name%></a></li>
+      <% }); %>
+    </ul>
+    <% } else { %>
+    <div>No albums found.</div>
+    <% } %>
+    <div class="control">
+      <h2>Add or update a new Album</h2>
+      <script>
+      function onFormSubmit(form) {
+        form.action = form.action + form.elements['item[id]'].value;
+        return true;
+      } 
+      </script>
+      <form method="post" action="/albums/"
+            onsubmit="return onFormSubmit(this);">
+            <!-- The line above dynamically sets the PUT destination when the -->
+        <!-- form is submitted. -------------------------------------------->
+        <input type="hidden" name="_method" value="put">
+        <!-- The line above tells the server to treat this as a PUT request. -->
+        <label>Album ID<br>
+          (lowercase letters and numbers only, no spaces):
+          <input name="item[id]" type="text" pattern="[a-z,1-100]+" required
+                 placeholder="Resonance">
+        </label>
+        <label>Album name: 
+          <input name="item[name]" type="text" required
+                 placeholder="Resonance">
+        </label>
+        <label>Artist name: 
+          <input name="item[artist]" type="text" required
+                 placeholder="Unknown">
+        </label>
+        <label>Genre: 
+          <input name="item[genre]" type="text" required
+                 placeholder="Fusion">
+        </label>
+        <label>Album description:
+          <textarea name="item[description]" cols="80" rows="10" 
+                    placeholder="Fusion music."
+          ></textarea>
+        </label>
+        <button>Add or update</button>
+      </form>
+    </div>
+     
+    <div class="control">
+      <h2>Search for albums by name</h2>
+      <form method="get" action="/albums/">
+        <label>Album name: <input name="name"></label>
+        <button>Search</button>
+      </form>
+      <h2>Search for albums by ID</h2>
+      <form method="get" action="/albums/id:">
+        <label>Album ID: <input id="id"></label>
+        <button>Search</button>
+      </form>
+    </div>
+  </body>
+</html>

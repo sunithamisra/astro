@@ -1,56 +1,41 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Election Data</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>Astro Music Library: Home</title>
+    <style type="text/css">
+        h2.categories
+        {
+            color:red;
+            text-align:left;
+        }
+        body {
+            background-color: #d2b48c;
+            margin-left: 20%;
+            margin-right: 20%;
+            border: 1px dotted gray;;
+            padding: 10px 10px 10px 10px
+            font-family: sans-serif;
+        }
+
+    </style>
   </head>
   <body>
-    <div id="display"></div>
-    <button id="candidates-button" class="toggle" type="button">View candidates</button>
-    <button id="parties-button" class="toggle" type="button">View parties</button>
-    <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
-    <script>
-var loaded = null;
-function load(path) {
-  if (path === loaded) { return; }
-  $.get(path, function (data) {
-    loaded = path;
-    $('#display').html(data);
-    $('.toggle').toggle();
-    $("a").click(onLinkClick);
-    $("form").submit(onFormSubmit);
-  });
-}
-function onLinkClick(click) {
-  click.preventDefault();
-  var href = $(this).attr('href');
-  if (href == '/') { load('/parties/'); }
-  else { load(href); }
-}
-function onFormSubmit(submit) {
-  submit.preventDefault();
-  var form = $(this);
-  var o = { 
-    url: form.attr('action'),
-    type: form.attr('method'),
-    data: form.serialize(),
-    success: function(data, status, xhr) {
-      if (status == 'success') {
-        load(xhr.getResponseHeader('Location'));
-      } else {
-        $('#display').html('<span class="error">Hmmm... something broke.</span>');
-      } 
-    }
-  };
-  if (o.type == 'put' && 'item[id]' in this.elements) {
-    o.url += this.elements['item[id]'].value;
-    o.data = o.data.split('&').slice(1).join('&');
-  }
-  $.ajax(o);
-}
-load('/parties/');
-$('#parties-button').click(function() { load('/parties/'); });
-$('#candidates-button').hide().click(function() { load('/candidates/'); });
-    </script>
+    <h1> Welcome to Astro Music Library</h1>
+    <img src="https://c9.io/sunithamisra/astro/workspace/views/IMG_3446.JPG" height="100" width="150" itemprop="image"/>
+    <h2 class=categories>Click to navigate </h2>
+  
+    <a href="/"><h1>Astro Music</h1></a>
+    <div itemscope itemtype="http://schema.org/MusicPlaylist/MusicAlbum">
+      <a href="/albums/"><h2>Astro Albums</h2></a>
+    </div>
+    <div itemscope itemtype="http://schema.org/MusicAlbum/byArtist">
+      <a href="/artists/"><h2>Astro Artists</h2></a>
+    </div>
+    <!--<div itemscope itemtype="http://schema.org/MusicAlbum/genre">
+      <a href="/genre/"><h2>Astro Genre</h2></a>
+    </div>-->
+    <div itemscope itemtype="http://schema.org/MusicPlaylist">
+      <a href="/playlist/"><h2>Playlist</h2></a>
+    </div>
   </body>
 </html>

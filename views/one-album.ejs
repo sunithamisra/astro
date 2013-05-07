@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Astro Music: <%=item.name%></title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <a href="/"><h1>Astro Music</h1></a>
+    <div itemscope itemtype="http://schema.org/MusicAlbum">
+    <dl>
+      <dt>Album Name</dt>
+      <dd itemprop="name"><%=item.name%></dd>
+      <dt>Artist</dt>
+      <!--<dd itemprop="name"><%=item.artist%></dd>-->
+      
+      <% related_items.forEach(function(related_item) { %>
+         <% if (related_item.name === item.artist) {%>
+           <%artist = related_item._id %> 
+         <%}%>       
+      <%});%>
+      
+      <dd itemprop="name"><a href="/artists/<%=artist%>"><%=item.artist%></a></dd>
+      
+      <dt>Genre</dt>
+      <dd itemprop="genre"><a href="/genre/<%=item.genre%>"><%=item.genre%></a></dd>
+      <% if (item.image) { %>
+      <dt>Image URL</dt>
+      <dd itemprop="url"><img src="<%=item.image%>" alt="<%=item.name%>"></dd>
+      <% } %>
+    </dl>
+    </div>
+    <div class="control">
+      <h2>Update Album</h2>
+      <form method="post" action="/albums/<%=item._id%>">
+        <input type="hidden" name="_method" value="put">
+        <!-- The line above tells the server to treat this as a PUT request. -->
+        <label>Name: 
+          <input name="item[name]" value="<%=item.name%>" type="text" required>
+        </label>
+        <label>Artist: 
+          <select name="item[artist]" required>
+            <% related_items.forEach(function(related_item) { %>
+            <option value="<%=related_item._id%>"
+              <% if (related_item._id === item.artist) { %>selected<% } %>>
+              <!--<%=related_item.name%>-->
+              <%=related_item.artist%>
+            </option>
+            <% }); %>
+          </select>
+        </label>
+        <label>Image URL:
+          <input name="item[image]" value="<%=item.image%>" type="url" size="80"> 
+        </label>
+        <button>Update</button>
+      </form>
+    </div>
+    
+    <div id="delete">
+      <h2>Remove an Album</h2>
+      <script>
+      function onFormSubmit(form) {
+        form.action = form.action + form.elements['item[id]'].value;
+        return true;
+      } 
+      </script>
+      <form method="post" action="/albums/<%=item._id%>">
+        <input type="hidden" name="_method" value="delete">   
+        <input type="hidden" name="item[id]" value="<%=item.id%>">
+        <input type="hidden" name="item[rev]" value="<%=item._rev%>">
+
+        <button>Delete</button>
+      </form>
+    </div>
+    
+  </body>
+</html>

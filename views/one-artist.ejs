@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Astro Music: <%=item.name%></title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <a href="/"><h1>Astro Music - Artists</h1></a>
+    <div itemscope itemtype="http://schema.org/MusicAlbum/byArtist">
+    <dl>
+      <dt>Artist name</dt>
+      <dd itemscope itemtype="http://schema.org/Person"><%=item.name%></dd>
+      <% if (item.description) { %>
+      <dt>Description</dt>
+      <dd itemscope itemtype="http://schema.org/description"><%=item.description%></dd>
+      <% } %>
+      <dt>Albums</dt>
+      
+      <dd>
+        <% if (related_items.length > 0) { %>
+        <ul>
+          <% related_items.forEach(function(related_item) { %>
+          <!--<li> -->
+            <!--<a href="/albums/<%=related_item._id%>"> -->
+              <!--<%=related_item.name%> -->
+            <!-- </a> -->
+            
+            <% if (related_item.artist === item.name) { %>
+              <li>
+              <a href="/albums/<%=related_item._id%>">
+                <%=related_item.name%>
+              </a>
+              </li>
+            <%}%>
+          <!--</li> -->
+          <% }); %>
+        </ul>
+        <% } else { %>
+        No albums have been added for this Artist.
+        <% } %>
+      </dd>
+    </dl>
+    </div>
+    
+    <div class="control">
+      <h2>Add a new Album for this Artist</h2>
+      <form id="create-album" method="post" action="/albums/">
+        <input type="hidden" name="item[artist]" value="<%=item._id%>">
+        <!--<input type="hidden" name="item[album]" value="<%=item.name%>">-->
+        <!-- The line above links the album to be created to this artist. -->
+        <label>Album name: 
+          <input name="item[name]" type="text" required
+                   placeholder="Breathless">
+        </label>
+        <label>Album ID: 
+          <input name="item[_id]" type="text" required
+                   placeholder="Breathless">
+        </label>
+        <label>Album image URL:
+          <input name="item[image]" type="url" size="80"
+                   placeholder="http://www.ronpaul2012.com/wp-content/themes/ronpaul/images/bg-header.jpg">
+       </label>    
+        <button>Add</button>
+      </form>
+    </div>
+  </body>
+</html>

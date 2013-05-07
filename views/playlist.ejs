@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Astro Music Library: Home</title>
+    <style type="text/css">
+        h2.categories
+        {
+            color:red;
+            text-align:left;
+        }
+        body {
+            background-color: #d2b48c;
+            margin-left: 20%;
+            margin-right: 20%;
+            border: 1px dotted gray;;
+            padding: 10px 10px 10px 10px
+            font-family: sans-serif;
+        }
+
+    </style>
+  </head>
+  <body>
+    <h1> Astro Music </h1>
+    <!--<img src="https://c9.io/sunithamisra/astro/workspace/views/IMG_3446.JPG" height="100" width="150"/>-->
+    <!--<img src="/astro//workspace/views/IMG_3446.JPG" height="100" width="150"/>-->
+   <!--<%var album_items = '/albums'%>-->
+   <% albums.forEach(function(item) { %>
+      <li><a href="/albums/<%=item._id%>"><%=item.name%></a></li>
+  
+  <% }); %>
+  
+  <!--<div class="control">
+      
+      <script>
+      function onFormSubmit(form) {
+        form.action = form.action + form.elements['item[id]'].value;
+        return true;
+      } 
+      </script>
+  </div>-->
+  
+    <a href="/"><h1>ASTRO MUSIC - Playlist</h1></a>
+    <% if (items.length > 0) { %>
+    <ul>
+      <% items.forEach(function(item) { %>
+      <li><a href="/playlist/<%=item._id%>"><%=item.name%></a></li>
+      <% }); %>
+    </ul>
+    <% } else { %>
+    <div>No Albums have been added to the playlist.</div>
+    <% } %>
+    <div class="control">
+      <h2>Add a new Album to the playlist</h2>
+      <script>
+      function onFormSubmit(form) {
+        <!--form.action = form.action + form.elements['item[id]'].value;-->
+        return true;
+      } 
+      </script>
+      <form method="post" action="/playlist/"
+            onsubmit="return onFormSubmit(this);">
+        <!-- The line above dynamically sets the PUT destination when the -->
+        <!-- form is submitted. -------------------------------------------->
+        <input type="hidden" name="_method" value="put">
+        <!-- The line above tells the server to treat this as a PUT request. -->
+        
+        <label>Album name: 
+          <input name="item[name]" type="text" required
+                 placeholder="none">
+        </label>  
+        <button>Add </button>
+      </form>
+    </div> 
+  </body>
+</html>  
