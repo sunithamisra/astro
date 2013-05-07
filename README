@@ -1,0 +1,81 @@
+Designing Astromusic Hypermedia Type
+
+
+The Astromusic repository has the following options to choose from:
+
+Albums
+Artists
+Playlist
+
+Albums displays a number of albums in the DB and gives option to add
+new albums with descriptions
+Artists displays the artist names and their albums
+One album can be viewed by clicking on the album name.
+One author can be viewed by clicking on the author name.
+Albums can be added to the Playlist. Due to lack of time, the delete
+function for playlist is not added. The only way to delete the albums from
+the play list is to do the back-door way by deleting them from the DB.
+
+
+Note: There is one thing I spent the most time on, but still couldn't
+get it working the way I wanted to. It is in the play-list, where
+I have put in a few checks before adding an album to the playlist.
+The logic is simple:
+  - If the album aleady exists in the playlist, don't write to DB and return.
+  - If the album doesn't exist in the albums list, return without saving to DB.
+
+From my console debugs, I know the above logic is working. But irrespective
+of the return, it always calls db.save. I understand the asynchronous
+nature of the callback, but I don't get the purpose of the return
+statement in a function if it executes the code after the check
+irrespective of the outcome of the logic. Due to lack of time to iron it
+out, I have left it that way.
+
+
+Attributes: Since the code evolved out of the election code that
+we were provided, the structure of the html code is different from
+that of the porevious assignment. So the ID and Class attrinutes are
+basically inherited from the election example. So not much is new here.
+
+Attribute values:
+This design relies on three unique identifiers for representations:
+
+Albums : Applied  to  a  div tag. Contains a list of Albums or a single album.
+Artists: Applied  to  a  div tag. Contains a list of Artists or a single artist.
+search_database  to a div tag. Contains a search box to search for an artist or
+an album
+Queries: Applied to a div tag. A list of albums or artists or a single album
+in the representation.
+
+Adding to the DB: albums and artists by name, id are added through the
+interface.
+
+
+Note: Honestly, for the reason given below, I am limitting the
+material to this file:
+
+The flow is very similar to the election example with the analogy:
+Party -> Artists, Candidate -> Albums
+Playlist is added, which uses these two.
+(The unexpected time taken for heroku deployment upset my schedule and
+hence I am forced to write a summary instead of the details I had planned
+originally).
+
+State Transitions (very similar to my prvious assignment):
+
+A set of states that are represented:
+
+- A list of Albums
+- A single Album
+- A list of Authors
+- Description of an Author
+- Queries: Search an album, an artist, a list of all albums.
+- Choose a set of songs for a playlist:
+- Choose a set of albums by an artist for a playlist:
+- Create a Playlist
+
+Note: State blocks, queries and Transfer blocks are not listed as they
+are similar to the election example.
+A few new blocks are added - like deleting an album, adding albums to
+a playlist, etc.
+
